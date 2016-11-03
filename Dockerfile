@@ -13,7 +13,7 @@ RUN echo "deb http://repo.mongodb.org/apt/debian wheezy/mongodb-org/3.2 main" > 
 
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
 
-RUN apt-get update && apt-get install --no-install-recommends -y \
+RUN apt-get clean && apt-get update && apt-get install --no-install-recommends -y \
     sudo \
     git \
     mongodb-org \
@@ -32,7 +32,7 @@ VOLUME /data/db
 RUN echo "deb http://ftp.debian.org/debian jessie-backports main" > \
     /etc/apt/sources.list.d/jessie-backports.list
 
-RUN apt-get update && apt-get install --no-install-recommends -y \
+RUN apt-get clean && apt-get update && apt-get install --no-install-recommends -y \
     -t jessie-backports \
     openjdk-8-jdk-headless \
     openjdk-8-jre-headless \
@@ -43,6 +43,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 RUN cd /srv; git clone https://github.com/eclipse/hawkbit.git
 # Use a custom pom.xml file where we add the mariadb dependency.
 COPY pom.xml /srv/hawkbit/examples/hawkbit-example-app
+COPY hawkbitvariables.scss /srv/hawkbit/hawkbit-ui/src/main/resources/VAADIN/themes/hawkbit/customstyles
 RUN cd /srv/hawkbit; mvn clean install
 
 COPY application.properties /srv
