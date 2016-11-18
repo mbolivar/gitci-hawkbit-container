@@ -41,7 +41,7 @@ RUN apt-get clean && apt-get update && apt-get install --no-install-recommends -
 
 # Clone and install hawkbit.
 RUN cd /srv; git clone https://github.com/eclipse/hawkbit.git
-RUN cd /srv/hawkbit ; git checkout tags/0.2.0M2
+RUN cd /srv/hawkbit ; git checkout tags/0.2.0M1
 # Use a custom pom.xml file where we add the mariadb dependency.
 COPY pom.xml /srv/hawkbit/examples/hawkbit-example-app
 COPY hawkbitvariables.scss /srv/hawkbit/hawkbit-ui/src/main/resources/VAADIN/themes/hawkbit/customstyles
