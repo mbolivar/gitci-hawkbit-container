@@ -32,7 +32,7 @@ and those should be reflected in the `application.properties` file.
 
 When MariaDB is up and running, start the Hawkbit container and link the MariaDB one.
 
-    docker run -d -t --name hawkbit --link mariadb:mysql -p 8080:8080 milocasagrande/hawkbit-docker
+    docker run -d -t --name hawkbit --link mariadb:mysql -p 8080:8080 gitci-hawkbit-container
 
 Once the container is up and running and the application started (in can take
 ~20 seconds for the application to start), head to http://localhost:8080/UI and
