@@ -11,6 +11,8 @@ LABEL Version="1.0" Description="Run hawkbit in a docker container (or at least 
 RUN echo "deb http://repo.mongodb.org/apt/debian wheezy/mongodb-org/3.2 main" > \
     /etc/apt/sources.list.d/mongodb-org-3.2.list
 
+ENV DEBIAN_FRONTEND noninteractive
+
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
 
 RUN apt-get clean && apt-get update && apt-get install --no-install-recommends -y \
@@ -19,7 +21,8 @@ RUN apt-get clean && apt-get update && apt-get install --no-install-recommends -
     mongodb-org \
     rabbitmq-server \
     && rm -rf /var/lib/mongodb \
-    && mv /etc/mongod.conf /etc/mongod.conf.orig
+    && mv /etc/mongod.conf /etc/mongod.conf.orig \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY mongod.conf /etc/mongod.conf
 
