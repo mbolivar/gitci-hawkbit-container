@@ -7,7 +7,7 @@
       <version>0.2.0-SNAPSHOT</version>
    </parent>
    <artifactId>hawkbit-example-app</artifactId>
-   <name>hawkBit-example :: UI Application</name>
+   <name>hawkBit-example :: Update Server</name>
 
    <build>
       <plugins>
@@ -46,60 +46,10 @@
    </build>
 
    <dependencies>
-      <!-- Hawkbit -->
       <dependency>
          <groupId>org.eclipse.hawkbit</groupId>
-         <artifactId>hawkbit-autoconfigure</artifactId>
+         <artifactId>hawkbit-boot-starter</artifactId>
          <version>${project.version}</version>
-      </dependency>
-      <dependency>
-         <groupId>org.eclipse.hawkbit</groupId>
-         <artifactId>hawkbit-mgmt-resource</artifactId>
-         <version>${project.version}</version>
-      </dependency>
-      <dependency>
-         <groupId>org.eclipse.hawkbit</groupId>
-         <artifactId>hawkbit-ddi-resource</artifactId>
-         <version>${project.version}</version>
-      </dependency>
-      <dependency>
-         <groupId>org.eclipse.hawkbit</groupId>
-         <artifactId>hawkbit-dmf-amqp</artifactId>
-         <version>${project.version}</version>
-      </dependency>
-      <dependency>
-         <groupId>org.eclipse.hawkbit</groupId>
-         <artifactId>hawkbit-ui</artifactId>
-         <version>${project.version}</version>
-      </dependency>
-      <dependency>
-         <groupId>org.eclipse.hawkbit</groupId>
-         <artifactId>hawkbit-security-integration</artifactId>
-         <version>${project.version}</version>
-      </dependency>
-      <dependency>
-         <groupId>org.eclipse.hawkbit</groupId>
-         <artifactId>hawkbit-http-security</artifactId>
-         <version>${project.version}</version>
-      </dependency>
-       <dependency>
-         <groupId>org.eclipse.hawkbit</groupId>
-         <artifactId>hawkbit-repository-jpa</artifactId>
-         <version>${project.version}</version>
-      </dependency>
-
-      <!-- Spring -->
-      <dependency>
-         <groupId>org.springframework.boot</groupId>
-         <artifactId>spring-boot-starter-web</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>org.springframework.boot</groupId>
-         <artifactId>spring-boot-starter</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>org.springframework.security</groupId>
-         <artifactId>spring-security-aspects</artifactId>
       </dependency>
 
       <dependency>

@@ -1,60 +1,40 @@
-FROM debian:jessie
+FROM debian:stretch
 
 MAINTAINER Milo Casagrande <milo.casagrande@linaro.org>
 LABEL Version="1.0" Description="Run hawkbit in a docker container (or at least try)"
 
-# Install mongodb from upstream repo.
-# Use wheezy instead of jessie since jessie's version is systemd compatible
-# but Docker vs Systemd is still an ongoing battle, and we need old style
-# init script to be installed.
-# Or better off using the official mongodb docker image and link it.
-RUN echo "deb http://repo.mongodb.org/apt/debian wheezy/mongodb-org/3.2 main" > \
-    /etc/apt/sources.list.d/mongodb-org-3.2.list
-
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
-
 RUN apt-get clean && apt-get update && apt-get install --no-install-recommends -y \
-    sudo \
-    git \
-    mongodb-org \
-    rabbitmq-server \
-    && rm -rf /var/lib/mongodb \
-    && mv /etc/mongod.conf /etc/mongod.conf.orig \
+    openjdk-8-jdk-headless \
+    maven \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-COPY mongod.conf /etc/mongod.conf
-
-RUN mkdir -p /data/db \
-    && chown -R mongodb:mongodb /data/db
-
-VOLUME /data/db
-
-# Enable backports and install (more recent) packages from there.
-RUN echo "deb http://ftp.debian.org/debian jessie-backports main" > \
-    /etc/apt/sources.list.d/jessie-backports.list
+RUN mkdir -p /srv/hawkbit
 
 RUN apt-get clean && apt-get update && apt-get install --no-install-recommends -y \
-    -t jessie-backports \
-    openjdk-8-jdk-headless \
-    openjdk-8-jre-headless \
-    maven \
-    redis-server
+    git \
+    && git clone https://github.com/eclipse/hawkbit /srv/hawkbit \
+    && rm -rf /srv/hawkbit/.git/ \
+    && apt-get purge -y --auto-remove git \
+    && apt-get autoremove -y \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# Clone and install hawkbit.
-RUN cd /srv; git clone https://github.com/eclipse/hawkbit.git
-RUN cd /srv/hawkbit ; git checkout tags/0.2.0M1
 # Use a custom pom.xml file where we add the mariadb dependency.
 COPY pom.xml /srv/hawkbit/examples/hawkbit-example-app
-COPY hawkbitvariables.scss /srv/hawkbit/hawkbit-ui/src/main/resources/VAADIN/themes/hawkbit/customstyles
-RUN cd /srv/hawkbit; mvn clean install
+
+# Custom styles, TODO
+# COPY hawkbitvariables.scss /srv/hawkbit/hawkbit-ui/src/main/resources/VAADIN/themes/hawkbit/customstyles
+# COPY gitcivariables.scss /srv/hawkbit/hawkbit-ui/src/main/resources/VAADIN/themes/hawkbit/customstyles
+# COPY styles.scss /srv/hawkbit/hawkbit-ui/src/main/resources/VAADIN/themes/hawkbit
+
+WORKDIR /srv/hawkbit
+RUN mvn clean install -DskipTests
 
 COPY application.properties /srv
 
-COPY ["start.sh", "hawkbit.sh", "/"]
-RUN chmod +x /start.sh /hawkbit.sh
-ENTRYPOINT ["/start.sh"]
-
 EXPOSE 8080
-CMD ["/hawkbit.sh"]
+WORKDIR /srv/hawkbit/examples/hawkbit-example-app/target
+CMD ["java", "-jar", "hawkbit-example-app-0.2.0-SNAPSHOT.jar", "--spring.config.location=file:/srv/application.properties"]
