@@ -37,4 +37,4 @@ COPY application.properties /srv
 
 EXPOSE 8080
 WORKDIR /srv/hawkbit/examples/hawkbit-example-app/target
-CMD ["java", "-jar", "hawkbit-example-app-0.2.0-SNAPSHOT.jar", "--spring.config.location=file:/srv/application.properties"]
+CMD ["java", "-jar", "hawkbit-example-app-0.2.0-SNAPSHOT.jar", "--spring.config.location=file:/srv/application.properties,file:/srv/secrets/secrets.properties"]
