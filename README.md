@@ -51,9 +51,13 @@ Run rabbitmq and mongdb:
 
 When all the containers are up, start the Hawkbit one:
 
-    docker run -dit --network=hawkbit-net --name hawkbit -p 8080:8080 linaroproduct/gitci-hawkbit-container
+    docker run -dit --network=hawkbit-net --name hawkbit -p 8080:8080 linaroproduct/ -v secrets.properties:/srv/secret/secrets.properties gitci-hawkbit-container
 
-If you prefer to use the `link` mode to connect the various containers, remove
+The `secrets.properties` file available in the repository is just an example:
+it should match at least the values defined for the Mariadb container before.
+The file has to be mounted at `/srv/secrets/secrets.properties`.
+
+If you prefer to use the `--link` mode to connect the various containers, remove
 the `--network` argument from the commands above, and on the last one (the one
 that runs Hawkbit) include:
 
