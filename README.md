@@ -44,6 +44,9 @@ and those should be reflected in the `application.properties` file.
 
     docker run -dit --network=hawkbit-net --name srv-mariadb -e MYSQL_ROOT_PASSWORD=ROOT_PASSWORD -e MYSQL_USER=USER_NAME -e MYSQL_PASSWORD=USER_PASSWORD -e MYSQL_DATABASE=DB_NAME mariadb
 
+> Note that the default database name, the value for the `MYSQL_DATABASE`
+variable, as defined in the hawkbit container is `hawkbit`. This cannot be changed without rebuilding the hawkbit container.
+
 Run rabbitmq and mongdb:
 
     docker run -dit --network=hawkbit-net --name srv-mongodb mongo:3.2
